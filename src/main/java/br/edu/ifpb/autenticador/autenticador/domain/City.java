@@ -29,4 +29,12 @@ public class City {
     @Cascade({CascadeType.ALL})
     private State state;
 
+    public City(){
+
+    }
+
+    public City(String name, State state) {
+        this.name = name;
+        this.state = state;
+    }
 }
