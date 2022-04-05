@@ -1,5 +1,6 @@
 package br.edu.ifpb.autenticador.autenticador.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,4 +22,21 @@ public class Permissions {
     private Boolean updatePermission;
     private Boolean insertPermission;
     private Boolean deletePermission;
+
+    public Permissions(){
+
+    }
+
+    public Permissions(Permissions target){
+        if(target != null){
+            this.adminPermission= target.adminPermission;
+            this.listPermission = target.listPermission;
+            this.updatePermission = target.updatePermission;
+            this.insertPermission = target.insertPermission;
+            this.deletePermission =target.deletePermission;
+        }
+    }
+    public Permissions clone() {
+        return new Permissions(this);
+    }
 }
