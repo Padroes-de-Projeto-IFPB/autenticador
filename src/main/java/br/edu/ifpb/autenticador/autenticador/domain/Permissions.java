@@ -12,6 +12,18 @@ import javax.persistence.Id;
 @Setter
 public class Permissions {
 
+    public Permissions() {}
+
+    public Permissions(Permissions permissions) {
+        if (permissions != null) {
+            this.adminPermission  = permissions.getAdminPermission();
+            this.listPermission   = permissions.getListPermission();
+            this.updatePermission = permissions.getUpdatePermission();
+            this.insertPermission = permissions.getInsertPermission();
+            this.deletePermission = permissions.getDeletePermission();
+        }
+    }
+
     @Id
     @GeneratedValue
     private Long id;
@@ -21,4 +33,8 @@ public class Permissions {
     private Boolean updatePermission;
     private Boolean insertPermission;
     private Boolean deletePermission;
+
+    public Permissions clone() {
+        return new Permissions(this);
+    }
 }
