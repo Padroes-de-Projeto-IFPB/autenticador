@@ -2,6 +2,7 @@ package br.edu.ifpb.autenticador.autenticador.web;
 
 import br.edu.ifpb.autenticador.autenticador.domain.*;
 import br.edu.ifpb.autenticador.autenticador.service.UserService;
+import br.edu.ifpb.autenticador.autenticador.web.builder.AddressBuilder;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,22 +24,16 @@ public class UserController {
     // TODO - refatorar método para utilizar o padrão BUILDER para construir o endereço
     @PutMapping("/update-address")
     public ResponseEntity<Void> updateAddress(Long userId, String rua, String numero, String bairro, String cidade, String estado, String pais) {
-        Address address = new Address();
-        address.setStreet(rua);
-        address.setNumber(numero);
-        address.setNeighborhood(bairro);
+        AddressBuilder address = new AddressBuilder();
 
-        Country country = new Country();
-        country.setName(pais);
-        State state = new State();
-        state.setName(estado);
-        state.setCountry(country);
-        City city = new City();
-        city.setName(cidade);
-        city.setState(state);
-        address.setCity(city);
+        address.setStreet(rua)
+               .setNumber(numero)
+               .setNeighborhood(bairro)
+               .setCity(cidade)
+               .setState(estado)
+               .setCountry(pais);
 
-        userService.updateUserAddress(userId, address);
+        userService.updateUserAddress(userId, address.getResult());
 
         return ResponseEntity.ok().build();
     }

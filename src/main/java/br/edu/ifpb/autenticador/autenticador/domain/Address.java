@@ -1,6 +1,7 @@
 package br.edu.ifpb.autenticador.autenticador.domain;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -15,7 +16,15 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Address {
+
+    public Address(String street, String neighborhood, String number, City city) {
+        this.street       = street;
+        this.neighborhood = neighborhood;
+        this.number       = number;
+        this.city         = city;
+    }
 
     @Id
     @GeneratedValue
