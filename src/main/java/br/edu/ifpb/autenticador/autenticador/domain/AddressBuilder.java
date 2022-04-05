@@ -1,9 +1,5 @@
 package br.edu.ifpb.autenticador.autenticador.domain;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
-
 public class AddressBuilder implements Builder{
 
     private Long id;
@@ -11,6 +7,14 @@ public class AddressBuilder implements Builder{
     private String neighborhood;
     private String number;
     private City city;
+
+    public AddressBuilder() {
+        this.city = new City();
+    }
+
+    public static Builder Build(){
+        return new AddressBuilder();
+    }
 
     @Override
     public Builder setStreet(String street) {
@@ -42,5 +46,9 @@ public class AddressBuilder implements Builder{
         city.setState(state);
         this.city = city;
         return this;
+    }
+
+    public Address getResult() {
+        return new Address(this.street, this.neighborhood, this.number, this.city);
     }
 }

@@ -35,7 +35,7 @@ public class Address {
     @Cascade({CascadeType.ALL})
     private City city;
 
-    public Address(String street, String neighborhood, String number, City city ){
+    public Address(String street, String neighborhood, String number, City city){
         this.street = street;
         this.neighborhood = neighborhood;
         this.number = number;
@@ -43,4 +43,7 @@ public class Address {
     }
 
 
+    public Address() {
+
+    }
 }

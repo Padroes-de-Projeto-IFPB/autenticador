@@ -4,5 +4,6 @@ public interface Builder {
     Builder setStreet(String street);
     Builder setNeighborhood(String neighborhood);
     Builder setNumber(String number);
-    Builder setCity(City city);
+    Builder setCity(String pais, String estado, String cidade);
+    Address getResult();
 }
