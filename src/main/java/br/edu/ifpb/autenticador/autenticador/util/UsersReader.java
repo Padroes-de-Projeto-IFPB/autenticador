@@ -1,5 +1,6 @@
 package br.edu.ifpb.autenticador.autenticador.util;
 
+import br.edu.ifpb.autenticador.autenticador.Singleton.Singleton;
 import br.edu.ifpb.autenticador.autenticador.domain.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -17,10 +18,10 @@ public class UsersReader {
 
     private static final String JSON_FILE = "users.json";
 
-    public static List<User> loadUsersFromJson() throws URISyntaxException, IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        User[] users = objectMapper.readValue(new File(ClassLoader.getSystemResource(JSON_FILE).toURI()), User[].class);
-        return asList(users);
-    }
 
+    public static List<User> loadUsersFromJson() throws URISyntaxException, IOException {
+        Singleton singleton = Singleton.getInstance(JSON_FILE);
+        List<User> users = singleton.getListUsers();
+        return users;
+    }
 }
