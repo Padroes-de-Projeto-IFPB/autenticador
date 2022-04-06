@@ -23,20 +23,12 @@ public class UserController {
     // TODO - refatorar método para utilizar o padrão BUILDER para construir o endereço
     @PutMapping("/update-address")
     public ResponseEntity<Void> updateAddress(Long userId, String rua, String numero, String bairro, String cidade, String estado, String pais) {
-        Address address = new Address();
-        address.setStreet(rua);
-        address.setNumber(numero);
-        address.setNeighborhood(bairro);
-
-        Country country = new Country();
-        country.setName(pais);
-        State state = new State();
-        state.setName(estado);
-        state.setCountry(country);
-        City city = new City();
-        city.setName(cidade);
-        city.setState(state);
-        address.setCity(city);
+        Address address = AddressBuilder.Build()
+                            .setStreet(rua)
+                            .setNumber(numero)
+                            .setNeighborhood(bairro)
+                            .setCity(pais,estado,cidade)
+                            .getResult();
 
         userService.updateUserAddress(userId, address);
 
