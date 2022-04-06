@@ -16,9 +16,27 @@ public class Permissions {
     @GeneratedValue
     private Long id;
 
-    private Boolean adminPermission;
-    private Boolean listPermission;
-    private Boolean updatePermission;
-    private Boolean insertPermission;
-    private Boolean deletePermission;
+    private Boolean adminPermission = false;
+    private Boolean listPermission = false;
+    private Boolean updatePermission = false;
+    private Boolean insertPermission = false;
+    private Boolean deletePermission = false;
+
+    public Permissions() { }
+
+    public Permissions(Permissions target) {
+        if (target != null){
+            this.adminPermission = target.adminPermission;
+            this.listPermission = target.listPermission;
+            this.updatePermission = target.updatePermission;
+            this.insertPermission = target.insertPermission;
+            this.deletePermission = target.deletePermission;
+        }
+    }
+
+    public Permissions clone(){
+        return null;
+    };
 }
+
+
