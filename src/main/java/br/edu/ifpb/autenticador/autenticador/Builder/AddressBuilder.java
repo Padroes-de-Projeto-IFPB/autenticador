@@ -1,24 +1,17 @@
-package br.edu.ifpb.autenticador.autenticador.domain;
+package br.edu.ifpb.autenticador.autenticador.Builder;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import br.edu.ifpb.autenticador.autenticador.domain.Address;
+import br.edu.ifpb.autenticador.autenticador.domain.City;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@NoArgsConstructor
-@Entity
-@Getter
-@Setter
-public class Address {
-
+public class AddressBuilder implements Builder{
     @Id
     @GeneratedValue
     private Long id;
@@ -37,10 +30,32 @@ public class Address {
     @Cascade({CascadeType.ALL})
     private City city;
 
-    public Address(String street, String neighborhood, String number, City city ) {
+    @Override
+    public Builder setStreet(String street) {
         this.street = street;
-        this.neighborhood = neighborhood;
-        this.number = number;
-        this.city = city;
+        return this;
     }
+
+    @Override
+    public Builder setNeighborhood(String neighborhood) {
+        this.neighborhood = neighborhood;
+        return this;
+    }
+
+    @Override
+    public Builder setNumber(String number) {
+        this.number = number;
+        return this;
+    }
+
+    @Override
+    public Builder setCity(City city) {
+        this.city = city;
+        return this;
+    }
+
+    public Address getResult(){
+        return new Address(street, neighborhood, number, city);
+    }
+
 }
