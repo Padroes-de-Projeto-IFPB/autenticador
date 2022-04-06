@@ -1,7 +1,6 @@
 package br.edu.ifpb.autenticador.autenticador.service;
 
 import br.edu.ifpb.autenticador.autenticador.domain.Address;
-import br.edu.ifpb.autenticador.autenticador.domain.Permissions;
 import br.edu.ifpb.autenticador.autenticador.domain.User;
 import br.edu.ifpb.autenticador.autenticador.repository.UserRepository;
 import br.edu.ifpb.autenticador.autenticador.service.exceptions.BadRequestException;
@@ -15,9 +14,11 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PermissionsRegistry permissionsRegistry;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PermissionsRegistry permissionsRegistry) {
         this.userRepository = userRepository;
+        this.permissionsRegistry = permissionsRegistry;
     }
 
     public void createUser(@Valid User user) {
@@ -40,36 +41,9 @@ public class UserService {
         userRepository.save(user);
     }
 
-    // TODO - refatorar método para utilizar o padrão PROTOTYPE que forneça um registry para criar os quatro tipos de permissão (administrador, somenteLeitura, operador e default)
     public void updateUserPermission(Long userId, String permissionName) {
         User user = userRepository.findById(userId).orElseThrow( () -> new BadRequestException("Usuário não existe!"));
-        Permissions permission = new Permissions();
-        switch (permissionName) {
-            case "administrador":
-                permission.setAdminPermission(true);
-                break;
-            case "somenteLeitura":
-                permission.setAdminPermission(false);
-                permission.setListPermission(true);
-                permission.setDeletePermission(false);
-                permission.setInsertPermission(false);
-                permission.setUpdatePermission(false);
-                break;
-            case "operador":
-                permission.setAdminPermission(false);
-                permission.setDeletePermission(false);
-                permission.setListPermission(true);
-                permission.setInsertPermission(true);
-                permission.setUpdatePermission(true);
-                break;
-            default:
-                permission.setAdminPermission(false);
-                permission.setDeletePermission(false);
-                permission.setListPermission(false);
-                permission.setInsertPermission(false);
-                permission.setUpdatePermission(false);
-        }
-        user.setPermission(permission);
+        user.setPermission(permissionsRegistry.get(permissionName));
         userRepository.save(user);
     }
 

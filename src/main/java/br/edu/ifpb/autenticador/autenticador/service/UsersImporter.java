@@ -21,7 +21,7 @@ public class UsersImporter {
 
     public void importUsers() {
         try {
-            List<User> users = UsersReader.loadUsersFromJson();
+            List<User> users = UsersReader.getInstance().getLoadedUsers();
             users.forEach(userService::createUser);
         } catch (URISyntaxException | IOException e) {
             log.error("Falha ao importar usuários");

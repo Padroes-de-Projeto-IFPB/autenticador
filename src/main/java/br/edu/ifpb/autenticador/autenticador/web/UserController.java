@@ -1,8 +1,9 @@
 package br.edu.ifpb.autenticador.autenticador.web;
 
+import br.edu.ifpb.autenticador.autenticador.builder.AddressBuilder;
 import br.edu.ifpb.autenticador.autenticador.domain.*;
 import br.edu.ifpb.autenticador.autenticador.service.UserService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,35 +11,27 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+    private final AddressBuilder addressBuilder;
 
     @GetMapping
     public List<User> listUsers() {
         return userService.listUsers();
     }
 
-    // TODO - refatorar método para utilizar o padrão BUILDER para construir o endereço
     @PutMapping("/update-address")
     public ResponseEntity<Void> updateAddress(Long userId, String rua, String numero, String bairro, String cidade, String estado, String pais) {
-        Address address = new Address();
-        address.setStreet(rua);
-        address.setNumber(numero);
-        address.setNeighborhood(bairro);
+        addressBuilder.setStreet(rua)
+                .setNumber(numero)
+                .setNeighborhood(bairro)
+                .setCity(cidade)
+                .setState(estado)
+                .setCountry(pais);
 
-        Country country = new Country();
-        country.setName(pais);
-        State state = new State();
-        state.setName(estado);
-        state.setCountry(country);
-        City city = new City();
-        city.setName(cidade);
-        city.setState(state);
-        address.setCity(city);
-
-        userService.updateUserAddress(userId, address);
+        userService.updateUserAddress(userId, addressBuilder.getResult());
 
         return ResponseEntity.ok().build();
     }
